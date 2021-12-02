@@ -97,7 +97,7 @@ function generateBomb() {
     // ciclo: genero sempre 16 bombe
     const numBomb = 16;
     const bombs_index = [];
-    for (let i = 0; i < numBomb; i++) {
+    for (let i = 0; i < numBomb-1; i++) {
         const dim = getDim(select.value);
         let number = intGen(0, dim);
         // se doppione rigenero numero
