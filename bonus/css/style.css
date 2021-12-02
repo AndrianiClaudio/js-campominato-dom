@@ -1,0 +1,112 @@
+/* variabili */
+:root {
+    --header-height: 100px;
+    --header-mini-screen-height: 150px;
+    --header-extra-mini-screen-height: 200px;
+    --title-font-size: 2.5rem;
+    --footer-height: 50px;
+    --main-bg-color: 127, 255, 212;
+    --selected-square-color: 100, 149, 237;
+    --bomb-square-color : 255,0,0;
+}
+
+/* generali */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+}
+/* flex */
+header.header,
+.header-left,
+.header-right,
+main.main,
+footer.footer {
+    display: flex;
+    align-items: center;
+}
+/* header */
+header.header {
+    justify-content: space-between;
+    min-height: var(--header-height);
+}
+/* header-left */
+h1.title {
+    display: inline-block;
+    font-size: var(--title-font-size);
+}
+#logo {
+    padding: 0 2rem;
+}
+/* header-right */
+.header-right{
+    padding-right: 1rem;
+    column-gap: 0.2rem;
+}
+span.difficulty {
+    font-size: 115%;
+}
+select > option {
+    width: 8rem;
+}
+button.btn-play {
+    padding: 0 1.5rem;
+}
+/* container */
+main.main {
+    justify-content: center;
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+    background-color: rgb(var(--main-bg-color));
+    min-height: 500px;
+}
+.container {
+    display: flex;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: 700px;
+    height: 500px;
+    flex-wrap: wrap;
+}
+/* square */
+.div-score {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 0.5rem;
+    font-weight: bold;
+}
+.square:hover {
+    cursor:pointer;
+}
+.square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+.square.click {
+    background-color: rgb(var(--selected-square-color));
+    color: white;
+    border: 2px solid black;
+}
+.square.bomb {
+    background-color: rgb(var(--bomb-square-color));
+    color: white;
+    border: 2px solid black;
+}
+.square.click:hover {
+    cursor: text;
+}
+/* footer */
+.footer {
+    height: var(--footer-height);
+}
+.copyright {
+    margin-left: 1rem;
+}
+.copyright > .fas.fa-heart {
+    color: black;
+}
