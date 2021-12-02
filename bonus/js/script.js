@@ -9,20 +9,29 @@
 // BONUS:
 // 1 - quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
 // 2 - quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
+function endGame(my_this,bombs_index,clicked_index) {
+    const divScore = createDiv('div-score');
+    my_this.classList.add('bomb');
+    const squareAll = document.querySelectorAll('.square');
+    for(let j=0;j<squareAll.length;j++) {
+        squareAll[j].classList.add('pointer-events-none');
+        if(bombs_index.includes(j)) {
+            squareAll[j].classList.add('bomb');
+        }
+    }
+    divScore.innerHTML = `Il tuo punteggio &egrave;: ${clicked_index.length}`;
+    // stampa punteggio
+    return divScore;
+}
 function printGrid(row, col) {
     let dim = row * col;
     // acquissco container
     const container = document.querySelector('.container');
     //rimuovo ogni possibile griglia precedente, se é presente
     container.innerHTML = '';
-
     const clicked_index = [];
     let bombs_index = generateBomb();
-    // let bombs_index = [];
     let clicked_index_max_length = dim - bombs_index.length;
-    // bombs_index = [];
-    console.log(bombs_index);
-    
     for (let i = 0; i < dim; i++) {
         //creo il mio square
         const square = document.createElement('div');
@@ -33,41 +42,16 @@ function printGrid(row, col) {
         square.innerHTML = i + 1;
         // click su cella
         square.addEventListener('click', function () {
-
-
-
             ///da creare funzione o condizione migliore....MA codice funziona
-            if (bombs_index.includes(parseInt(this.innerHTML))) {
+            if (bombs_index.includes(parseInt(this.innerHTML)) || clicked_index.length == clicked_index_max_length - 1) {
                 // se numero presente in lista generati ==> bomba
-                const divScore = createDiv('div-score');
-                this.classList.add('bomb');
-                const squareAll = document.querySelectorAll('.square');
-                for(let j=0;j<squareAll.length;j++) {
-                    squareAll[j].classList.add('pointer-events-none');
-                    if(bombs_index.includes(j))
-                    squareAll[j].classList.add('bomb');
-                }
-                divScore.innerHTML = `Il tuo punteggio &egrave;: ${clicked_index.length}`;
-                // stampa punteggio
+                divScore = endGame(this,bombs_index,clicked_index);
                 container.prepend(divScore);
-            } else if (clicked_index.length == clicked_index_max_length -1) {
-                this.classList.add('click');
-                clicked_index.push(i);
-                const divScore = createDiv('div-score');
-                const squareAll = document.querySelectorAll('.square');
-                for (let j = 0; j < squareAll.length; j++) {
-                    squareAll[j].classList.add('pointer-events-none');
-                }
-                divScore.innerHTML = `Il tuo punteggio &egrave;: ${clicked_index.length}`;
-                // stampa punteggio
-                container.prepend(divScore);
-
-            } else { //clicca
+            } else {
                 this.classList.add('click');
                 clicked_index.push(i);
             }
         });
-        // console.log(clicked_index.length,dim - bombs_index.length);
         container.appendChild(square);
     }
 }
@@ -111,7 +95,7 @@ function getDim(difficulty) {
 }
 function generateBomb() {
     // ciclo: genero sempre 16 bombe
-    const numBomb = 16;
+    const numBomb = 48;
     const bombs_index = [];
     for (let i = 0; i < numBomb; i++) {
         const dim = getDim(select.value);
@@ -173,13 +157,10 @@ function createDom(body) {
     const button = document.createElement('button');
     button.classList.add('btn-play');
     button.innerHTML = 'Play';
-
     //main
     const main = document.createElement('main');
     main.classList.add('main');
     const container = createDiv('container');
-
-
     // footer
     const footer = document.createElement('footer');
     footer.classList.add('footer');
@@ -201,6 +182,7 @@ function createDom(body) {
     return button;
 }
 
+// PROGRAMMA
 const body = document.querySelector('body');
 //ottengo bottone gioco
 let button = createDom(body);
