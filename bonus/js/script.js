@@ -95,7 +95,7 @@ function getDim(difficulty) {
 }
 function generateBomb() {
     // ciclo: genero sempre 16 bombe
-    const numBomb = 48;
+    const numBomb = 16;
     const bombs_index = [];
     for (let i = 0; i < numBomb; i++) {
         const dim = getDim(select.value);
