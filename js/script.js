@@ -130,8 +130,6 @@ button.addEventListener('click', function() {
     switch(select.value) {
         default: generateGrid(select.value);
     }
-    let bombs_index = generateBomb();
-    console.log(bombs_index);
 });
 // cambia griglia al change della select
 // select.addEventListener('change',function() {
@@ -195,8 +193,7 @@ function generateBomb() {
     // console.log(bombs_index, 'length: ', bombs_index.length);
     return bombs_index;
 }
-let bombs_index = generateBomb();
-
+// let bombs_index = generateBomb();
 
 
 function printGrid(row, col) {
@@ -205,6 +202,12 @@ function printGrid(row, col) {
     const container = document.querySelector('.container');
     //rimuovo ogni possibile griglia precedente, se é presente
     container.innerHTML = '';
+    
+    
+    const clicked_index =[];
+    let bombs_index = generateBomb();
+    console.log(bombs_index);
+
     for (let i = 0; i < dim; i++) {
         //creo il mio square
         const square = document.createElement('div');
@@ -213,12 +216,17 @@ function printGrid(row, col) {
         square.style.height = `calc(100% / ${row})`;
         // aggiungi un quadrato col numero
         square.innerHTML = i + 1;
-        //azioni al click sul quadrato
+        // click su cella
         square.addEventListener('click', function () {
             this.classList.add('click');
-
-        // click su cella
+            // console.log(this.innerHTML);
+            // console.log(typeof this.innerHTML);
             // se numero presente in lista generati ==> bomba
+            if (bombs_index.includes(parseInt(this.innerHTML))) { 
+                console.log('bomba');
+            } else {
+                console.log('NON bomba');
+            }
                 // Cella rossa. fine partita
             // altrimenti
                 // Cella azzurra
