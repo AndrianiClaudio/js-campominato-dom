@@ -1,48 +1,48 @@
-function printGrid(row, col) {
-    let dim = row * col;
-    // acquissco container
-    const container = document.querySelector('.container');
-    //rimuovo ogni possibile griglia precedente, se é presente
-    container.innerHTML = '';
-    for (let i = 0; i < dim; i++) {
-        //creo il mio square
-        const square = document.createElement('div');
-        square.classList.add('square');
-        square.style.width = `calc(100% / ${col})`;
-        square.style.height = `calc(100% / ${row})`;
-        // aggiungi un quadrato col numero
-        square.innerHTML = i + 1;
-        //azioni al click sul quadrato
-        square.addEventListener('click', function () {
-            this.classList.add('click');
-        });
-        container.appendChild(square);
-    }
-}
+// function printGrid(row, col) {
+//     let dim = row * col;
+//     // acquissco container
+//     const container = document.querySelector('.container');
+//     //rimuovo ogni possibile griglia precedente, se é presente
+//     container.innerHTML = '';
+//     for (let i = 0; i < dim; i++) {
+//         //creo il mio square
+//         const square = document.createElement('div');
+//         square.classList.add('square');
+//         square.style.width = `calc(100% / ${col})`;
+//         square.style.height = `calc(100% / ${row})`;
+//         // aggiungi un quadrato col numero
+//         square.innerHTML = i + 1;
+//         //azioni al click sul quadrato
+//         square.addEventListener('click', function () {
+//             this.classList.add('click');
+//         });
+//         container.appendChild(square);
+//     }
+// }
 function generateGrid(difficulty) {
     // attribuisci a row e col valori diversi a seconda della difficoltá
-    let row; 
+    let row;
     let col;
-    switch(difficulty) {
+    switch (difficulty) {
         case 'easy':
             row = 10;
             col = 10;
-            break;    
-            case 'medium': 
+            break;
+        case 'medium':
             row = 9;
             col = 9;
-            break;    
-            case 'hard': 
+            break;
+        case 'hard':
             row = 7;
             col = 7;
-            break;   
+            break;
         default:
             // modifiche impreviste, setta a zero per non creare griglia, non soddisfando la condizione del ciclo for sottostante
-            row=0;
-            col=0;
+            row = 0;
+            col = 0;
     }
     printGrid (row,col);
-}
+}   
 function createDiv(mainClass) {
     const div = document.createElement('div');
     div.classList.add(mainClass);
@@ -130,16 +130,16 @@ button.addEventListener('click', function() {
     switch(select.value) {
         default: generateGrid(select.value);
     }
+    let bombs_index = generateBomb();
+    console.log(bombs_index);
 });
-//cambia griglia al change della select
+// cambia griglia al change della select
 // select.addEventListener('change',function() {
 //     switch (select.value) {
 //         default: generateGrid(select.value);
+//         // let bombs_index = generateBomb();
 //     }
 // })
-
-
-
 
 
 
@@ -151,3 +151,85 @@ button.addEventListener('click', function() {
 //     BONUS:
 // 1 - quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
 // 2 - quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
+
+//genera numero casuale tra un min e un max(il numero di celle disponibili)
+function intGen(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function getDim(difficulty) {
+    switch (difficulty) {
+        case 'easy':
+            row = 10;
+            col = 10;
+            break;
+        case 'medium':
+            row = 9;
+            col = 9;
+            break;
+        case 'hard':
+            row = 7;
+            col = 7;
+            break;
+        default:
+            // modifiche impreviste, setta a zero per non creare griglia, non soddisfando la condizione del ciclo for sottostante
+            row = 0;
+            col = 0;
+    }
+    return row*col;
+}
+        
+        // ciclo: genero sempre 16 bombe
+function generateBomb() {
+    const numBomb = 16;
+    const bombs_index = [];
+    for (let i = 0; i < numBomb; i++) {
+        const dim = getDim(select.value);
+        let number = intGen(0, dim);
+        // se doppione rigenero numero
+        while (bombs_index.includes(number)) {
+            number = intGen(0, dim);
+        }
+        bombs_index.push(number);
+    }
+    // console.log(bombs_index, 'length: ', bombs_index.length);
+    return bombs_index;
+}
+let bombs_index = generateBomb();
+
+
+
+function printGrid(row, col) {
+    let dim = row * col;
+    // acquissco container
+    const container = document.querySelector('.container');
+    //rimuovo ogni possibile griglia precedente, se é presente
+    container.innerHTML = '';
+    for (let i = 0; i < dim; i++) {
+        //creo il mio square
+        const square = document.createElement('div');
+        square.classList.add('square');
+        square.style.width = `calc(100% / ${col})`;
+        square.style.height = `calc(100% / ${row})`;
+        // aggiungi un quadrato col numero
+        square.innerHTML = i + 1;
+        //azioni al click sul quadrato
+        square.addEventListener('click', function () {
+            this.classList.add('click');
+
+        // click su cella
+            // se numero presente in lista generati ==> bomba
+                // Cella rossa. fine partita
+            // altrimenti
+                // Cella azzurra
+        // alla fine (fine elementi o bomba)
+            // comunica punteggio: #click sulla cella non bomba
+        });
+        container.appendChild(square);
+    }
+}
+
+
+
+
+
