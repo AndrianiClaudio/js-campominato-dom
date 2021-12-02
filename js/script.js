@@ -218,20 +218,25 @@ function printGrid(row, col) {
         square.innerHTML = i + 1;
         // click su cella
         square.addEventListener('click', function () {
-            this.classList.add('click');
             // console.log(this.innerHTML);
             // console.log(typeof this.innerHTML);
             // se numero presente in lista generati ==> bomba
             if (bombs_index.includes(parseInt(this.innerHTML))) { 
-                console.log('bomba');
-            } else {
-                console.log('NON bomba');
-            }
+                this.classList.add('bomb');
                 // Cella rossa. fine partita
-            // altrimenti
+                //stampa puntegio
+
+                const divScore = createDiv('div-score');
+                console.log(clicked_index);
+                divScore.innerHTML = `Il tuo punteggio &egrave;: ${clicked_index.length}`;
+                container.prepend(divScore);
+                // console.log('bomba');
+            } else {
                 // Cella azzurra
-        // alla fine (fine elementi o bomba)
-            // comunica punteggio: #click sulla cella non bomba
+                this.classList.add('click');
+                clicked_index.push(i);
+                // console.log('NON bomba');
+            }
         });
         container.appendChild(square);
     }
