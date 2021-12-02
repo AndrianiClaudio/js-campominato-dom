@@ -33,6 +33,10 @@ function printGrid(row, col) {
         square.innerHTML = i + 1;
         // click su cella
         square.addEventListener('click', function () {
+
+
+
+            ///da creare funzione o condizione migliore....MA codice funziona
             if (bombs_index.includes(parseInt(this.innerHTML))) {
                 // se numero presente in lista generati ==> bomba
                 const divScore = createDiv('div-score');
@@ -40,6 +44,8 @@ function printGrid(row, col) {
                 const squareAll = document.querySelectorAll('.square');
                 for(let j=0;j<squareAll.length;j++) {
                     squareAll[j].classList.add('pointer-events-none');
+                    if(bombs_index.includes(j))
+                    squareAll[j].classList.add('bomb');
                 }
                 divScore.innerHTML = `Il tuo punteggio &egrave;: ${clicked_index.length}`;
                 // stampa punteggio

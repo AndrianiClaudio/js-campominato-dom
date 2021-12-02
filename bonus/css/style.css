@@ -97,10 +97,13 @@ main.main {
     border: 2px solid black;
 }
 .square.bomb {
-    background-color: rgb(var(--bomb-square-color));
     color: white;
     border: 2px solid black;
+    background-color: rgb(var(--bomb-square-color));
 }
+/* .square.bomb.click {
+
+} */
 .square.click:hover {
     cursor: text;
 }
