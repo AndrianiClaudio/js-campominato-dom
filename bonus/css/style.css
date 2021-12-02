@@ -10,6 +10,10 @@
     --bomb-square-color : 255,0,0;
 }
 
+.pointer-events-none {
+    pointer-events:none;
+}
+
 /* generali */
 * {
     box-sizing: border-box;
@@ -61,7 +65,7 @@ main.main {
     justify-content: center;
     height: calc(100vh - var(--header-height) - var(--footer-height));
     background-color: rgb(var(--main-bg-color));
-    min-height: 500px;
+    min-height: 550px;
 }
 .container {
     display: flex;
