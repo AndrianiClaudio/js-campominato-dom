@@ -9,6 +9,13 @@
 // BONUS:
 // 1 - quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
 // 2 - quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
+/**
+ * 
+ * @param {*} my_this this,indica lo square cliccato.
+ * @param {*} bombs_index array contentente indici in cui sono presenti le nostre bombe.
+ * @param {*} clicked_index array contente indici square cliccati. 
+ * @returns div che stampa il punteggio e con tutte le bombe visualizzate.
+ */
 function endGame(my_this,bombs_index,clicked_index) {
     const divScore = createDiv('div-score');
     my_this.classList.add('bomb');
@@ -23,6 +30,11 @@ function endGame(my_this,bombs_index,clicked_index) {
     // stampa punteggio
     return divScore;
 }
+/**
+ * 
+ * @param {*} row #righe
+ * @param {*} col #colonne
+ */
 function printGrid(row, col) {
     let dim = row * col;
     // acquissco container
@@ -43,7 +55,7 @@ function printGrid(row, col) {
         // click su cella
         square.addEventListener('click', function () {
             ///da creare funzione o condizione migliore....MA codice funziona
-            if (bombs_index.includes(parseInt(this.innerHTML)) || clicked_index.length == clicked_index_max_length - 1) {
+            if (bombs_index.includes(parseInt(this.innerHTML) -1) || clicked_index.length == clicked_index_max_length - 1) {
                 // se numero presente in lista generati ==> bomba
                 divScore = endGame(this,bombs_index,clicked_index);
                 container.prepend(divScore);
@@ -55,6 +67,11 @@ function printGrid(row, col) {
         container.appendChild(square);
     }
 }
+/**
+ * 
+ * @param {*} difficulty  attuale difficolta del gioco(string: easy-medium-hard)
+ * @returns array[#righe,#colonne]
+ */
 function gridSetup (difficulty) {
     let row;
     let col;
@@ -78,6 +95,10 @@ function gridSetup (difficulty) {
     }
     return [row,col];
 }
+/**
+ * 
+ * @param {*} difficulty attuale difficolta del gioco(string: easy-medium-hard)
+ */
 function generateGrid(difficulty) {
     // attribuisci a row e col valori diversi a seconda della difficoltá
     row = gridSetup(difficulty)[0];
@@ -85,19 +106,34 @@ function generateGrid(difficulty) {
     printGrid(row, col);
 }
 //genera numero casuale tra un min e un max(il numero di celle disponibili)
+/**
+ * 
+ * @param {*} min posizione cella iniziale
+ * @param {*} max posizione cella finale
+ * @returns generazione numero casuale
+ */
 function intGen(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+/**
+ * 
+ * @param {*} difficulty attuale difficolta del gioco(string: easy-medium-hard)
+ * @returns dimensione: righe x colonne
+ */
 function getDim(difficulty) {
     row = gridSetup(difficulty)[0];
     col = gridSetup(difficulty)[1];
     return row * col;
 }
+/**
+ * 
+ * @returns array contente gli indici delle bombe
+ */
 function generateBomb() {
     // ciclo: genero sempre 16 bombe
     const numBomb = 16;
     const bombs_index = [];
-    for (let i = 0; i < numBomb-1; i++) {
+    for (let i = 0; i < numBomb; i++) {
         const dim = getDim(select.value);
         let number = intGen(0, dim);
         // se doppione rigenero numero
@@ -106,20 +142,35 @@ function generateBomb() {
         }
         bombs_index.push(number);
     }
-    // console.log(bombs_index, 'length: ', bombs_index.length);
+    // console.log(bombs_index);
     return bombs_index;
 }
 // CREAZIONE ELEMENTI DOM
+/**
+ * 
+ * @param {*} mainClass nome classe da aggiungere
+ * @returns div creato con classe
+ */
 function createDiv(mainClass) {
     const div = document.createElement('div');
     div.classList.add(mainClass);
     return div;
 }
+/**
+ * 
+ * @param {*} value value da applicare alla option da creare
+ * @returns option con value
+ */
 function createOption(value) {
     let option = document.createElement('option');
     option.value = value;
     return option;
 }
+/**
+ * 
+ * @param {*} body il body dove appendere la del gioco 
+ * @returns bottone play, con cui interagire post
+ */
 function createDom(body) {
     // creo header
     const header = document.createElement('header');
@@ -182,7 +233,9 @@ function createDom(body) {
     return button;
 }
 
-// PROGRAMMA
+/**
+ * PROGRAMMA
+ *  */
 const body = document.querySelector('body');
 //ottengo bottone gioco
 let button = createDom(body);
