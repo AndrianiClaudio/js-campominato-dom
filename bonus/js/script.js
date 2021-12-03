@@ -61,6 +61,7 @@ function printGrid(row, col) {
                 container.prepend(divScore);
             } else {
                 this.classList.add('click');
+                this.classList.add('pointer-events-none');
                 clicked_index.push(i);
             }
         });
