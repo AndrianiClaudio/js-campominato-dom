@@ -16,9 +16,9 @@
  * @param {*} clicked_index array contente indici square cliccati. 
  * @returns div che stampa il punteggio e con tutte le bombe visualizzate.
  */
-function endGame(my_this,bombs_index,clicked_index) {
+function endGame(my_this,bombs_index,clicked_index,msg) {
     const divScore = createDiv('div-score');
-    my_this.classList.add('bomb');
+    // my_this.classList.add('bomb');
     const squareAll = document.querySelectorAll('.square');
     for(let j=0;j<squareAll.length;j++) {
         squareAll[j].classList.add('pointer-events-none');
@@ -26,7 +26,7 @@ function endGame(my_this,bombs_index,clicked_index) {
             squareAll[j].classList.add('bomb');
         }
     }
-    divScore.innerHTML = `Il tuo punteggio &egrave;: ${clicked_index.length}`;
+    divScore.innerHTML = msg + clicked_index.length;
     // stampa punteggio
     return divScore;
 }
@@ -55,14 +55,19 @@ function printGrid(row, col) {
         // click su cella
         square.addEventListener('click', function () {
             ///da creare funzione o condizione migliore....MA codice funziona
-            if (bombs_index.includes(parseInt(this.innerHTML) -1) || clicked_index.length == clicked_index_max_length - 1) {
-                // se numero presente in lista generati ==> bomba
-                divScore = endGame(this,bombs_index,clicked_index);
-                container.prepend(divScore);
-            } else {
+            if (!bombs_index.includes(parseInt(this.innerHTML) -1) && clicked_index.length <= clicked_index_max_length) {
                 this.classList.add('click');
                 this.classList.add('pointer-events-none');
                 clicked_index.push(i);
+                if (clicked_index.length == clicked_index_max_length) {
+                    divScore = endGame(this, bombs_index, clicked_index, 'Complimenti! Hai Vinto. Punteggio massimo ottenuto: ');
+                    container.prepend(divScore);
+                }
+            } else {
+                // se numero presente in lista generati ==> bomba
+                divScore = endGame(this, bombs_index, clicked_index, 'Hai ottenuto un punteggio pari a ');
+                container.prepend(divScore);
+                // console.log(bombs_index);
             }
         });
         container.appendChild(square);
@@ -88,6 +93,8 @@ function gridSetup (difficulty) {
         case 'hard':
             row = 7;
             col = 7;
+            // row = 2;
+            // col = 2;
             break;
         default:
             // modifiche impreviste, setta a zero per non creare griglia, non soddisfando la condizione del ciclo for sottostante
@@ -133,6 +140,7 @@ function getDim(difficulty) {
 function generateBomb() {
     // ciclo: genero sempre 16 bombe
     const numBomb = 16;
+    // const numBomb = 0;
     const bombs_index = [];
     for (let i = 0; i < numBomb; i++) {
         const dim = getDim(select.value);
@@ -146,100 +154,13 @@ function generateBomb() {
     // console.log(bombs_index);
     return bombs_index;
 }
-// CREAZIONE ELEMENTI DOM
-/**
- * 
- * @param {*} mainClass nome classe da aggiungere
- * @returns div creato con classe
- */
-function createDiv(mainClass) {
-    const div = document.createElement('div');
-    div.classList.add(mainClass);
-    return div;
-}
-/**
- * 
- * @param {*} value value da applicare alla option da creare
- * @returns option con value
- */
-function createOption(value) {
-    let option = document.createElement('option');
-    option.value = value;
-    return option;
-}
-/**
- * 
- * @param {*} body il body dove appendere la del gioco 
- * @returns bottone play, con cui interagire post
- */
-function createDom(body) {
-    // creo header
-    const header = document.createElement('header');
-    header.classList.add('header');
-    //header-left
-    const headerLeft = createDiv('header-left');
-    // logo
-    const logo = document.createElement('img');
-    let logo_src = 'img/logo-boolean.png';
-    logo.src = logo_src;
-    logo.alt = 'logo di Boolean';
-    logo.id = 'logo';
-    // titolo
-    const title = document.createElement('h1');
-    title.classList.add('title');
-    title.innerHTML = 'Campo Minato';
-    //  header-right
-    const headerRight = createDiv('header-right');
-    // span
-    const span_header = document.createElement('span');
-    span_header.classList.add('difficulty');
-    span_header.innerHTML = 'Difficolt&aacute;: ';
-    // select
-    const select = document.createElement('select');
-    select.name = 'select-difficulty';
-    const optionEasy = createOption('easy');
-    optionEasy.innerHTML = 'easy';
-    // select.append(optionEasy);
-    const optionMedium = createOption('medium');
-    optionMedium.innerHTML = 'medium';
-    // select.append(optionMedium);
-    const optionHard = createOption('hard');
-    optionHard.innerHTML = 'hard';
-    // button
-    const button = document.createElement('button');
-    button.classList.add('btn-play');
-    button.innerHTML = 'Play';
-    //main
-    const main = document.createElement('main');
-    main.classList.add('main');
-    const container = createDiv('container');
-    // footer
-    const footer = document.createElement('footer');
-    footer.classList.add('footer');
-    const copyright = createDiv('copyright');
-    const span_footer = document.createElement('span');
-    span_footer.classList.add('copyright');
-    span_footer.innerHTML = 'Made with <i class="fas fa-heart"></i> by <a href="#" class="subline-link">Boolean</a>';
-    // FINE: ----CREAZIONE ELEMENTI DOM
-    //elementi inseriti in index.html
-    headerLeft.append(logo, title);
-    select.append(optionEasy, optionMedium, optionHard);
-    headerRight.append(span_header, select, button);
-    header.append(headerLeft, headerRight);
-    main.append(container);
-    footer.append(copyright);
-    copyright.append(span_footer);
-    //prepend per mantenere script a fondo pagina
-    body.prepend(header, main, footer);
-    return button;
-}
 
 /**
  * PROGRAMMA
  *  */
-const body = document.querySelector('body');
+createDom(); // in altro file
 //ottengo bottone gioco
-let button = createDom(body);
+const button = document.querySelector('.btn-play');
 //azione play
 const select = document.querySelector('select');
 //cambia griglia al click sul bottone
